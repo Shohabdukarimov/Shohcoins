@@ -174,7 +174,10 @@
         tg.ready();
         tg.expand();
 
-        let telegramId = "test_user";
+        const tg = window.Telegram.WebApp;
+tg.ready();
+
+const telegramId = String(tg.initDataUnsafe.user.id);
 
         if (
             tg.initDataUnsafe &&
