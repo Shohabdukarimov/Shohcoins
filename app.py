@@ -50,7 +50,17 @@ def click():
     db.session.commit()
     
     return jsonify({"balance": user.balance, "clicks": user.clicks})
+@app.route('/leaderboard', methods=['GET'])
+def leaderboard():
+    users = User.query.order_by(User.balance.desc()).limit(10).all()
 
+    return jsonify([
+        {
+            "telegram_id": user.telegram_id,
+            "balance": user.balance
+        }
+        for user in users
+    ])
 # UI sahifasini ko‘rsatish
 @app.route('/')
 def index():
