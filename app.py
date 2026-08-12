@@ -16,7 +16,24 @@ class User(db.Model):
 # Ma’lumotlar bazasini yaratish
 with app.app_context():
     db.create_all()
+@app.route('/user', methods=['GET'])
+def get_user():
+    telegram_id = request.args.get('telegram_id')
 
+    if not telegram_id:
+        return jsonify({"error": "telegram_id kerak"}), 400
+
+    user = User.query.filter_by(telegram_id=telegram_id).first()
+
+    if not user:
+        user = User(telegram_id=telegram_id)
+        db.session.add(user)
+        db.session.commit()
+
+    return jsonify({
+        "balance": user.balance,
+        "clicks": user.clicks
+    })
 # API: Foydalanuvchi klik bosganda ishlaydi
 @app.route('/click', methods=['POST'])
 def click():
