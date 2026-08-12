@@ -3,295 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Shohcoins</title>
+
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
     <style>
         * {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
         }
 
         body {
-            font-family: Arial, sans-serif;
+            margin: 0;
             min-height: 100vh;
             background: #0b0b12;
             color: white;
-            display: flex;
-            justify-content: center;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 480px;
-            min-height: 100vh;
-            padding: 25px 18px;
-        }
-
-        .header {
+            font-family: Arial, sans-serif;
             text-align: center;
-            margin-top: 20px;
-            margin-bottom: 30px;
-        }
-
-        .logo {
-            font-size: 42px;
-            margin-bottom: 8px;
-        }
-
-        .title {
-            font-size: 32px;
-            font-weight: 800;
-        }
-
-        .subtitle {
-            color: #999;
-            margin-top: 8px;
-            font-size: 15px;
-        }
-
-        .card {
-            background: linear-gradient(145deg, #171722, #101018);
-            border: 1px solid #292938;
-            border-radius: 24px;
-            padding: 25px;
-            text-align: center;
-            margin-bottom: 18px;
-            box-shadow: 0 10px 35px rgba(0,0,0,0.3);
-        }
-
-        .balance-label {
-            color: #999;
-            font-size: 15px;
-            margin-bottom: 8px;
-        }
-
-        .balance {
-            font-size: 52px;
-            font-weight: 900;
-            color: #ffd43b;
-        }
-
-        .coin-name {
-            color: #aaa;
-            margin-top: 5px;
-        }
-
-        .click-button {
-            width: 100%;
-            height: 180px;
-            border: none;
-            border-radius: 30px;
-            background: linear-gradient(145deg, #ffd43b, #ff9f1c);
-            color: #17120a;
-            font-size: 28px;
-            font-weight: 900;
-            cursor: pointer;
-            box-shadow: 0 12px 30px rgba(255, 190, 40, 0.25);
-            transition: transform 0.1s, box-shadow 0.1s;
-            margin-bottom: 18px;
-        }
-
-        .click-button:active {
-            transform: scale(0.96);
-            box-shadow: 0 5px 15px rgba(255, 190, 40, 0.2);
+            padding: 30px 20px;
         }
 
         .coin {
-            font-size: 65px;
-            display: block;
-            margin-bottom: 10px;
+            font-size: 70px;
+        }
+
+        h1 {
+            font-size: 48px;
+            margin: 5px 0;
+        }
+
+        .subtitle {
+            color: #aaa;
+            font-size: 20px;
+        }
+
+        .balance {
+            margin-top: 40px;
+            padding: 30px;
+            border-radius: 30px;
+            background: #171720;
+            border: 1px solid #30303d;
+        }
+
+        .balance-title {
+            color: #aaa;
+            font-size: 20px;
+        }
+
+        #balance {
+            font-size: 70px;
+            font-weight: bold;
+            color: #ffc928;
+            margin: 10px;
+        }
+
+        .click-btn {
+            width: 100%;
+            margin-top: 35px;
+            padding: 55px 20px;
+            border: none;
+            border-radius: 35px;
+            background: linear-gradient(135deg, #ffc928, #ff9f1c);
+            font-size: 32px;
+            font-weight: bold;
+            color: #111;
+            cursor: pointer;
+            box-shadow: 0 10px 35px rgba(255, 190, 30, 0.25);
+        }
+
+        .click-btn:active {
+            transform: scale(0.97);
         }
 
         .stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 14px;
+            display: flex;
+            gap: 20px;
+            margin-top: 25px;
         }
 
         .stat {
-            background: #171722;
-            border: 1px solid #292938;
-            border-radius: 20px;
-            padding: 20px 10px;
-            text-align: center;
+            flex: 1;
+            background: #171720;
+            border: 1px solid #30303d;
+            border-radius: 25px;
+            padding: 25px 10px;
         }
 
-        .stat-number {
-            font-size: 25px;
-            font-weight: 800;
-            color: #fff;
-        }
-
-        .stat-label {
-            color: #888;
-            font-size: 13px;
-            margin-top: 6px;
-        }
-
-        .telegram-box {
-            margin-top: 18px;
-            background: #171722;
-            border: 1px solid #292938;
-            border-radius: 20px;
-            padding: 18px;
-            text-align: center;
-        }
-
-        .telegram-title {
-            color: #888;
-            font-size: 13px;
-            margin-bottom: 7px;
-        }
-
-        .telegram-id {
+        .number {
+            font-size: 35px;
             font-weight: bold;
-            word-break: break-all;
         }
 
-        .status {
-            text-align: center;
-            color: #5ee68a;
-            font-size: 13px;
-            margin-top: 20px;
-        }
-
-        .footer {
-            text-align: center;
-            color: #555;
-            font-size: 12px;
-            margin-top: 25px;
-            padding-bottom: 20px;
+        .label {
+            color: #999;
+            margin-top: 8px;
         }
     </style>
 </head>
 
 <body>
 
-<div class="container">
+    <div class="coin">🪙</div>
 
-    <div class="header">
-        <div class="logo">🪙</div>
-        <div class="title">Shohcoins</div>
-        <div class="subtitle">Klik qiling va SHC yig‘ing!</div>
+    <h1>Shohcoins</h1>
+    <div class="subtitle">Klik qiling va SHC yig‘ing!</div>
+
+    <div class="balance">
+        <div class="balance-title">Sizning balansingiz</div>
+        <div id="balance">0</div>
+        <div class="balance-title">SHC COINS</div>
     </div>
 
-    <div class="card">
-        <div class="balance-label">Sizning balansingiz</div>
-
-        <div class="balance" id="balance">0</div>
-
-        <div class="coin-name">SHC COINS</div>
-    </div>
-
-    <button class="click-button" onclick="clickCoin()">
-        <span class="coin">🪙</span>
+    <button class="click-btn" onclick="addCoin()">
+        🪙<br>
         +1 SHC
     </button>
 
     <div class="stats">
+        <div class="stat">
+            <div class="number" id="clicks">0</div>
+            <div class="label">Jami kliklar</div>
+        </div>
 
         <div class="stat">
-            <div class="stat-number" id="clicks">0</div>
-            <div class="stat-label">Jami kliklar</div>
-        </div>
-
-        <div class="stat">
-            <div class="stat-number">SHC</div>
-            <div class="stat-label">Valyuta</div>
-        </div>
-
-    </div>
-
-    <div class="telegram-box">
-        <div class="telegram-title">Telegram ID</div>
-        <div class="telegram-id" id="telegramId">
-            Aniqlanmoqda...
+            <div class="number">SHC</div>
+            <div class="label">Valyuta</div>
         </div>
     </div>
 
-    <div class="status">
-        ● Shohcoins online
-    </div>
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.ready();
 
-    <div class="footer">
-        Shohcoins © 2026
-    </div>
+        let telegramId = "test_user";
 
-</div>
-
-<script>
-
-    // Telegram ID
-    // Hozircha test uchun
-    let telegramId = "test_user";
-
-    // Sahifa ochilganda ma'lumotlarni olish
-    document.getElementById("telegramId").innerText = telegramId;
-
-    // Balans
-    let balance = 0;
-    let clicks = 0;
-
-
-    async function clickCoin() {
-
-        const button = document.querySelector(".click-button");
-
-        button.style.transform = "scale(0.96)";
-
-        setTimeout(() => {
-            button.style.transform = "scale(1)";
-        }, 100);
-
-
-        try {
-
-            const response = await fetch("/click", {
-
-                method: "POST",
-
-                headers: {
-                    "Content-Type": "application/json"
-                },
-
-                body: JSON.stringify({
-                    telegram_id: telegramId
-                })
-
-            });
-
-
-            if (!response.ok) {
-                throw new Error("Server xatosi");
-            }
-
-
-            const data = await response.json();
-
-
-            balance = data.balance;
-
-            clicks++;
-
-
-            document.getElementById("balance").innerText = balance;
-
-            document.getElementById("clicks").innerText = clicks;
-
-
-        } catch (error) {
-
-            console.error(error);
-
-            alert("Server bilan bog‘lanishda xatolik!");
-
+        if (tg.initDataUnsafe &&
+            tg.initDataUnsafe.user &&
+            tg.initDataUnsafe.user.id) {
+            telegramId = String(tg.initDataUnsafe.user.id);
         }
 
-    }
+        async function loadUser() {
+            try {
+                const response = await fetch(
+                    "/user?telegram_id=" + encodeURIComponent(telegramId)
+                );
 
-</script>
+                const data = await response.json();
+
+                document.getElementById("balance").textContent = data.balance;
+                document.getElementById("clicks").textContent = data.clicks;
+
+            } catch (error) {
+                console.log("User yuklashda xato:", error);
+            }
+        }
+
+        async function addCoin() {
+            try {
+                const response = await fetch("/click", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        telegram_id: telegramId
+                    })
+                });
+
+                const data = await response.json();
+
+                document.getElementById("balance").textContent = data.balance;
+                document.getElementById("clicks").textContent = data.clicks;
+
+            } catch (error) {
+                console.log("Klik xatosi:", error);
+            }
+        }
+
+        loadUser();
+    </script>
 
 </body>
 </html>
