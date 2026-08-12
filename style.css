@@ -1,0 +1,293 @@
+/* ShohCoins — Telegram uslubidagi Mini App */
+
+:root {
+  --tg-bg: #0e1621;
+  --tg-panel: #17212b;
+  --tg-card: #1f2a35;
+  --tg-card-hover: #263442;
+  --tg-blue: #2aabee;
+  --tg-blue-dark: #229ed9;
+  --tg-text: #f5f5f5;
+  --tg-muted: #8e9aa7;
+  --tg-border: rgba(255,255,255,.07);
+  --tg-shadow: 0 8px 28px rgba(0,0,0,.28);
+  --radius: 18px;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--tg-bg);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  color: var(--tg-text);
+  text-align: center;
+  padding: 18px 14px 30px;
+  overflow-x: hidden;
+}
+
+/* Main container */
+.container,
+.app,
+.app-container,
+main {
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+/* Headings */
+h1, h2, h3 {
+  margin: 10px 0 18px;
+  color: var(--tg-text);
+}
+
+p {
+  color: var(--tg-muted);
+  line-height: 1.55;
+}
+
+/* Cards */
+.card,
+.panel,
+.section,
+.referral-card,
+.stats-card,
+.balance-card {
+  background: var(--tg-panel);
+  border: 1px solid var(--tg-border);
+  border-radius: var(--radius);
+  box-shadow: var(--tg-shadow);
+  padding: 20px;
+  margin: 14px 0;
+}
+
+/* Balance / coin area */
+.balance,
+.balance-card {
+  background: linear-gradient(145deg, #17212b, #111a24);
+}
+
+.balance h1,
+.balance-card h1 {
+  font-size: clamp(42px, 12vw, 72px);
+  margin: 8px 0;
+  font-weight: 800;
+  color: var(--tg-text);
+}
+
+/* Buttons */
+button,
+.btn,
+a.button {
+  appearance: none;
+  border: 0;
+  outline: 0;
+  width: 100%;
+  min-height: 52px;
+  padding: 13px 18px;
+  margin: 8px 0;
+  border-radius: 15px;
+  background: var(--tg-blue);
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform .12s ease, background .15s ease, box-shadow .15s ease;
+  box-shadow: 0 5px 16px rgba(42,171,238,.20);
+}
+
+button:hover,
+.btn:hover,
+a.button:hover {
+  background: var(--tg-blue-dark);
+}
+
+button:active,
+.btn:active,
+a.button:active {
+  transform: scale(.97);
+}
+
+/* Secondary Telegram-style buttons */
+button.secondary,
+.btn.secondary,
+.secondary {
+  background: var(--tg-card);
+  color: var(--tg-text);
+  box-shadow: none;
+}
+
+button.secondary:hover,
+.btn.secondary:hover,
+.secondary:hover {
+  background: var(--tg-card-hover);
+}
+
+/* Coin click button */
+#clickBtn,
+#coinBtn,
+.coin-btn,
+.coin-button {
+  min-height: 110px;
+  border-radius: 24px;
+  font-size: 24px;
+  font-weight: 800;
+  background: linear-gradient(180deg, #2aabee, #229ed9);
+  box-shadow: 0 10px 30px rgba(42,171,238,.24);
+}
+
+#clickBtn:active,
+#coinBtn:active,
+.coin-btn:active,
+.coin-button:active {
+  transform: scale(.94);
+}
+
+/* Inputs */
+input,
+textarea,
+select {
+  width: 100%;
+  border: 1px solid var(--tg-border);
+  border-radius: 14px;
+  background: var(--tg-card);
+  color: var(--tg-text);
+  padding: 14px 15px;
+  font-size: 16px;
+  outline: none;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--tg-blue);
+}
+
+/* Links */
+a {
+  color: var(--tg-blue);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Referral / Top lists */
+.referral-list,
+.top-list,
+.leaderboard {
+  text-align: left;
+}
+
+.referral-list > div,
+.top-list > div,
+.leaderboard > div,
+.user-row,
+.rank-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 13px 14px;
+  margin: 7px 0;
+  border-radius: 13px;
+  background: var(--tg-card);
+  border: 1px solid var(--tg-border);
+}
+
+/* Small statistic boxes */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.stat {
+  background: var(--tg-panel);
+  border: 1px solid var(--tg-border);
+  border-radius: 16px;
+  padding: 16px 10px;
+}
+
+.stat strong {
+  display: block;
+  font-size: 27px;
+  color: var(--tg-text);
+}
+
+.stat span {
+  color: var(--tg-muted);
+  font-size: 14px;
+}
+
+/* Modal / separate referral window */
+.modal,
+.popup,
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0,0,0,.62);
+  backdrop-filter: blur(5px);
+  padding: 18px;
+}
+
+.modal-content,
+.popup-content {
+  width: min(100%, 520px);
+  max-height: 90vh;
+  overflow-y: auto;
+  margin: 5vh auto 0;
+  padding: 20px;
+  border-radius: 22px;
+  background: var(--tg-panel);
+  border: 1px solid var(--tg-border);
+  box-shadow: var(--tg-shadow);
+}
+
+/* Hide utility */
+.hidden {
+  display: none !important;
+}
+
+/* Toast / messages */
+.toast,
+.message,
+.alert {
+  border-radius: 14px;
+  padding: 13px 15px;
+  margin: 12px 0;
+  background: var(--tg-card);
+  color: var(--tg-text);
+  border: 1px solid var(--tg-border);
+}
+
+/* Responsive */
+@media (max-width: 380px) {
+  body {
+    padding: 12px 10px 24px;
+  }
+
+  .card,
+  .panel,
+  .section,
+  .referral-card,
+  .stats-card,
+  .balance-card {
+    padding: 16px;
+  }
+
+  button,
+  .btn {
+    font-size: 16px;
+  }
+}
