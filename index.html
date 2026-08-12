@@ -208,6 +208,88 @@
     loadUser();
     loadLeaderboard();
 </script>
+<!-- TOP O'YINCHILAR -->
+<div class="top-section">
+    <h2>🏆 TOP O'YINCHILAR</h2>
+    <div id="leaderboard">
+        <p>Yuklanmoqda...</p>
+    </div>
+</div>
 
+<style>
+.top-section {
+    margin: 25px 15px;
+    padding: 20px;
+    background: #181820;
+    border: 1px solid #292936;
+    border-radius: 22px;
+}
+
+.top-section h2 {
+    text-align: center;
+    color: #ffb800;
+    margin-bottom: 18px;
+}
+
+.player {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px;
+    margin: 8px 0;
+    background: #20202a;
+    border-radius: 14px;
+    color: white;
+}
+
+.player .place {
+    font-size: 22px;
+    width: 45px;
+}
+
+.player .id {
+    flex: 1;
+    color: #ccc;
+}
+
+.player .coins {
+    color: #ffb800;
+    font-weight: bold;
+}
+</style>
+
+<script>
+async function loadLeaderboard() {
+    try {
+        const response = await fetch('/leaderboard');
+        const players = await response.json();
+
+        const box = document.getElementById('leaderboard');
+        box.innerHTML = '';
+
+        players.forEach((player, index) => {
+            let medal = '';
+
+            if (index === 0) medal = '🥇';
+            else if (index === 1) medal = '🥈';
+            else if (index === 2) medal = '🥉';
+            else medal = (index + 1) + '.';
+
+            box.innerHTML += `
+                <div class="player">
+                    <div class="place">${medal}</div>
+                    <div class="id">Telegram: ${player.telegram_id}</div>
+                    <div class="coins">${player.balance} SHC</div>
+                </div>
+            `;
+        });
+    } catch (error) {
+        document.getElementById('leaderboard').innerHTML =
+            '<p style="color:red;text-align:center;">TOP yuklanmadi</p>';
+    }
+}
+
+loadLeaderboard();
+</script>
 </body>
 </html>
