@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SHOH COIN</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      overflow-x: hidden;
+      position: relative;
+      isolation: isolate;
+      background:
+        radial-gradient(circle at 50% 18%, rgba(255, 205, 92, .22), transparent 24%),
+        radial-gradient(circle at 15% 85%, rgba(255, 154, 39, .16), transparent 28%),
+        radial-gradient(circle at 88% 75%, rgba(255, 215, 106, .13), transparent 25%),
+        linear-gradient(145deg, #080604 0%, #1b1006 42%, #070504 100%);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: -20%;
+      z-index: -2;
+      background:
+        radial-gradient(circle, rgba(255, 205, 92, .12) 0 1px, transparent 2px) 0 0 / 55px 55px,
+        radial-gradient(circle, rgba(255, 169, 47, .09) 0 1px, transparent 2px) 25px 30px / 80px 80px;
+      animation: stars 18s linear infinite;
+      pointer-events: none;
+    }
+
+    body::after {
+      content: "👑";
+      position: fixed;
+      right: -35px;
+      top: 8%;
+      font-size: 190px;
+      opacity: .035;
+      transform: rotate(18deg);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    @keyframes stars {
+      from { transform: translate3d(0, 0, 0); }
+      to { transform: translate3d(-55px, -55px, 0); }
+    }
+
+    .game {
+      width: min(430px, 100%);
+      text-align: center;
+      background: rgba(20, 12, 4, .88);
+      border: 2px solid #d99a32;
+      border-radius: 24px;
+      padding: 24px 18px 28px;
+      box-shadow: 0 0 35px rgba(255, 177, 45, .25);
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: 38px;
+      color: #ffd76a;
+      letter-spacing: 3px;
+      text-shadow: 0 3px 12px #000;
+    }
+
+    .subtitle {
+      color: #e8c98c;
+      margin-bottom: 18px;
+    }
+
+    .score {
+      font-size: 30px;
+      font-weight: bold;
+      margin: 10px 0 4px;
+      color: #ffd76a;
+    }
+
+    .stats {
+      color: #d9c7a5;
+      margin-bottom: 18px;
+    }
+
+    .coin-wrap {
+      position: relative;
+      width: min(310px, 82vw);
+      aspect-ratio: 1;
+      margin: 0 auto;
+    }
+
+    .coin {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      border-radius: 50%;
+      padding: 0;
+      cursor: pointer;
+      background: #d89a31;
+      box-shadow: 0 12px 0 #80510e, 0 18px 30px rgba(0,0,0,.5);
+      overflow: hidden;
+      transition: transform .08s, box-shadow .08s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .coin:active {
+      transform: translateY(9px) scale(.97);
+      box-shadow: 0 3px 0 #80510e, 0 10px 20px rgba(0,0,0,.45);
+    }
+
+    .coin img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Har bosganda chiqadigan +1, +2, +5, +10 */
+    .float-number {
+      position: absolute;
+      left: 50%;
+      top: 45%;
+      transform: translate(-50%, 0);
+      pointer-events: none;
+      font-size: 34px;
+      font-weight: 900;
+      color: #fff0a8;
+      text-shadow: 0 3px 8px #000, 0 0 12px #ffb52e;
+      animation: floatUp .8s ease-out forwards;
+      z-index: 10;
+    }
+
+    @keyframes floatUp {
+      0% {
+        opacity: 1;
+        transform: translate(-50%, 0) scale(.8);
+      }
+      25% {
+        transform: translate(-50%, -18px) scale(1.15);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -115px) scale(1);
+      }
+    }
+
+    .bonus-box {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 16px;
+      background: rgba(255, 190, 70, .07);
+      border: 1px solid rgba(217,154,50,.45);
+    }
+
+    .bonus-box h2 {
+      margin: 0;
+      color: #ffd76a;
+      font-size: 22px;
+    }
+
+    .bonus-note {
+      margin: 6px 0 12px;
+      color: #d9c7a5;
+      font-size: 13px;
+    }
+
+    .bonus-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 9px;
+      padding: 12px 14px;
+      border: 1px solid #9e6d1f;
+      border-radius: 11px;
+      background: #211406;
+      color: #ffe29a;
+      font-weight: bold;
+      font-size: 14px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .bonus-btn span {
+      color: #ffd76a;
+      white-space: nowrap;
+    }
+
+    .bonus-btn:active {
+      transform: scale(.98);
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+
+    button.small {
+      border: 1px solid #d99a32;
+      background: #2a1908;
+      color: #ffd76a;
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    button.small:active { transform: scale(.97); }
+
+    .upgrade {
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: 14px;
+      background: rgba(255, 190, 70, .08);
+      border: 1px solid rgba(217,154,50,.45);
+    }
+
+    .upgrade button {
+      margin-top: 8px;
+      width: 100%;
+      border: 0;
+      border-radius: 10px;
+      padding: 12px;
+      background: #d99a32;
+      color: #160d03;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .message {
+      min-height: 22px;
+      margin-top: 10px;
+      color: #ffe8ae;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <main class="game">
+    <h1>SHOH COIN</h1>
+    <div class="subtitle">Coin yig‘ing va rekord o‘rnating! 👑</div>
+
+    <div class="score">🪙 <span id="coins">0</span></div>
+    <div class="stats">
+      Bosishlar: <span id="clicks">0</span> · Har bosishda: +<span id="power">1</span>
+    </div>
+
+    <div class="coin-wrap" id="coinWrap">
+      <button class="coin" id="coinButton" aria-label="SHOH COIN ni bosish">
+        <img src="coin.jpg" alt="SHOH COIN">
+      </button>
+    </div>
+
+    <div class="upgrade">
+      <div>⚡ Kuchaytirish</div>
+      <div style="margin-top:6px">
+        Hozir: <b>+<span id="power2">1</span></b>
+        → Keyingi: <b>+<span id="nextPower">2</span></b>
+      </div>
+      <div style="margin-top:6px">Narxi: 🪙 <span id="upgradeCost">50</span></div>
+      <button id="upgradeButton">UPGRADE</button>
+    </div>
+
+    <div class="bonus-box">
+      <h2>🎁 BONUSLAR</h2>
+      <p class="bonus-note">Vazifalarni bajaring va bonus coin oling!</p>
+
+      <a class="bonus-btn" href="https://t.me/Abdukarimov_blog1" target="_blank" rel="noopener">
+        📢 Telegram kanal <span>+100 🪙</span>
+      </a>
+
+      <a class="bonus-btn" href="https://t.me/shoh_coins" target="_blank" rel="noopener">
+        🪙 SHOH COINS <span>+100 🪙</span>
+      </a>
+
+      <a class="bonus-btn" href="https://instagram.com/Shoh.abdukarimov1" target="_blank" rel="noopener">
+        📸 Instagram <span>+100 🪙</span>
+      </a>
+
+      <button class="bonus-btn" id="inviteButton">
+        👥 Do‘stlarni taklif qilish <span>+200 🪙</span>
+      </button>
+    </div>
+
+    <div class="buttons">
+      <button class="small" id="saveButton">💾 Saqlash</button>
+      <button class="small" id="resetButton">🔄 Qayta boshlash</button>
+    </div>
+
+    <div class="message" id="message"></div>
+  </main>
+
+  <script>
+    const savedPower = Number(localStorage.getItem("shohPower") || 1);
+
+    const state = {
+      coins: Number(localStorage.getItem("shohCoins") || 0),
+      clicks: Number(localStorage.getItem("shohClicks") || 0),
+      power: savedPower,
+      upgradeCost: Number(localStorage.getItem("shohUpgradeCost") || 50)
+    };
+
+    const coinsEl = document.getElementById("coins");
+    const clicksEl = document.getElementById("clicks");
+    const powerEl = document.getElementById("power");
+    const power2El = document.getElementById("power2");
+    const nextPowerEl = document.getElementById("nextPower");
+    const upgradeCostEl = document.getElementById("upgradeCost");
+    const messageEl = document.getElementById("message");
+    const coinWrap = document.getElementById("coinWrap");
+
+    // Upgrade ketma-ketligi: +1 → +2 → +5 → +10 → +20 → +50 → ...
+    const upgradePowers = [1, 2, 5, 10, 20, 50, 100, 250, 500];
+
+    function getNextPower() {
+      const index = upgradePowers.indexOf(state.power);
+      if (index !== -1 && index < upgradePowers.length - 1) {
+        return upgradePowers[index + 1];
+      }
+      return state.power * 2;
+    }
+
+    function render() {
+      coinsEl.textContent = state.coins;
+      clicksEl.textContent = state.clicks;
+      powerEl.textContent = state.power;
+      power2El.textContent = state.power;
+      nextPowerEl.textContent = getNextPower();
+      upgradeCostEl.textContent = state.upgradeCost;
+    }
+
+    function save() {
+      localStorage.setItem("shohCoins", state.coins);
+      localStorage.setItem("shohClicks", state.clicks);
+      localStorage.setItem("shohPower", state.power);
+      localStorage.setItem("shohUpgradeCost", state.upgradeCost);
+    }
+
+    function showFloatingNumber(value) {
+      const el = document.createElement("div");
+      el.className = "float-number";
+      el.textContent = "+" + value;
+      coinWrap.appendChild(el);
+
+      setTimeout(() => el.remove(), 800);
+    }
+
+    document.getElementById("coinButton").addEventListener("click", () => {
+      state.coins += state.power;
+      state.clicks++;
+
+      showFloatingNumber(state.power);
+
+      render();
+      save();
+    });
+
+    document.getElementById("upgradeButton").addEventListener("click", () => {
+      if (state.coins < state.upgradeCost) {
+        messageEl.textContent = "❌ Upgrade uchun coin yetarli emas!";
+        return;
+      }
+
+      const oldPower = state.power;
+      const newPower = getNextPower();
+
+      state.coins -= state.upgradeCost;
+      state.power = newPower;
+      state.upgradeCost = Math.ceil(state.upgradeCost * 2.2);
+
+      messageEl.textContent = "🔥 Upgrade: +" + oldPower + " → +" + newPower + "!";
+      render();
+      save();
+    });
+
+    const bonusKeys = {
+      telegram: "shohBonusTelegram",
+      shohcoins: "shohBonusShohCoins",
+      instagram: "shohBonusInstagram",
+      invite: "shohBonusInvite"
+    };
+
+    function claimBonus(key, amount) {
+      if (localStorage.getItem(bonusKeys[key])) {
+        messageEl.textContent = "ℹ️ Bu bonus oldin olingan.";
+        return;
+      }
+      state.coins += amount;
+      localStorage.setItem(bonusKeys[key], "1");
+      render();
+      save();
+      messageEl.textContent = "🎉 Bonus olindi: +" + amount + " coin!";
+    }
+
+    // Hozircha tugmalar sahifaga olib boradi; bonusni olish uchun
+    // foydalanuvchi qaytib kelganda shu brauzerda bir marta beriladi.
+    document.querySelector('a[href="https://t.me/Abdukarimov_blog1"]').addEventListener("click", () => {
+      setTimeout(() => claimBonus("telegram", 100), 700);
+    });
+
+    document.querySelector('a[href="https://t.me/shoh_coins"]').addEventListener("click", () => {
+      setTimeout(() => claimBonus("shohcoins", 100), 700);
+    });
+
+    document.querySelector('a[href="https://instagram.com/Shoh.abdukarimov1"]').addEventListener("click", () => {
+      setTimeout(() => claimBonus("instagram", 100), 700);
+    });
+
+    document.getElementById("inviteButton").addEventListener("click", async () => {
+      const shareText = "SHOH COIN 🪙👑 — coin yig‘ib, upgrade qiling!";
+      const shareUrl = window.location.href;
+
+      if (navigator.share) {
+        try {
+          await navigator.share({ title: "SHOH COIN", text: shareText, url: shareUrl });
+          claimBonus("invite", 200);
+        } catch (e) {}
+      } else {
+        try {
+          await navigator.clipboard.writeText(shareUrl);
+          claimBonus("invite", 200);
+          messageEl.textContent = "🔗 Havola nusxalandi! Do‘stingizga yuboring.";
+        } catch (e) {
+          messageEl.textContent = "🔗 Sayt havolasini do‘stingizga yuboring.";
+        }
+      }
+    });
+
+    document.getElementById("saveButton").addEventListener("click", () => {
+      save();
+      messageEl.textContent = "✅ Natija saqlandi!";
+    });
+
+    document.getElementById("resetButton").addEventListener("click", () => {
+      if (!confirm("Barcha natijani o‘chirishni xohlaysizmi?")) return;
+
+      state.coins = 0;
+      state.clicks = 0;
+      state.power = 1;
+      state.upgradeCost = 50;
+
+      save();
+      render();
+      messageEl.textContent = "🔄 O‘yin qayta boshlandi.";
+    });
+
+    render();
+  </script>
+</body>
+</html>
