@@ -1063,6 +1063,828 @@ start();
 
 </body>
 
+HTML = r"""
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>SHOCOINS</title>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<style>
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+:root{
+    --bg:#07080d;
+    --card:#11131b;
+    --card2:#171a24;
+    --gold:#ffc400;
+    --gold2:#ff9f00;
+    --text:#ffffff;
+    --muted:#858b9a;
+    --border:rgba(255,255,255,.07);
+}
+
+body{
+    margin:0;
+    min-height:100vh;
+    color:var(--text);
+    font-family:Arial,Helvetica,sans-serif;
+    background:
+        radial-gradient(circle at 50% -10%,rgba(255,196,0,.16),transparent 35%),
+        var(--bg);
+}
+
+.container{
+    width:100%;
+    max-width:520px;
+    margin:auto;
+    padding:18px 16px 35px;
+}
+
+.header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:18px;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.logo-coin{
+    width:43px;
+    height:43px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:23px;
+    background:linear-gradient(145deg,#ffe16a,#ff9d00);
+    box-shadow:0 8px 25px rgba(255,174,0,.25);
+}
+
+.logo-text{
+    font-size:20px;
+    font-weight:900;
+    letter-spacing:1.5px;
+}
+
+.logo-text span{
+    color:var(--gold);
+}
+
+.status{
+    padding:7px 11px;
+    border-radius:20px;
+    background:rgba(74,222,128,.09);
+    color:#65e39a;
+    font-size:11px;
+    font-weight:bold;
+}
+
+.profile{
+    background:linear-gradient(145deg,var(--card2),var(--card));
+    border:1px solid var(--border);
+    border-radius:24px;
+    padding:15px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:15px;
+}
+
+.avatar{
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(145deg,#ffd84a,#ff9800);
+    color:#111;
+    font-size:22px;
+    font-weight:900;
+}
+
+.profile-name{
+    font-weight:800;
+    font-size:16px;
+}
+
+.profile-id{
+    color:var(--muted);
+    font-size:12px;
+    margin-top:4px;
+}
+
+.balance-card{
+    position:relative;
+    overflow:hidden;
+    background:
+        radial-gradient(circle at 85% 15%,rgba(255,196,0,.17),transparent 35%),
+        linear-gradient(145deg,#171a24,#0f1118);
+    border:1px solid rgba(255,196,0,.14);
+    border-radius:30px;
+    padding:25px 20px;
+    text-align:center;
+    box-shadow:0 20px 50px rgba(0,0,0,.25);
+}
+
+.balance-label{
+    color:var(--muted);
+    font-size:13px;
+    font-weight:bold;
+    text-transform:uppercase;
+    letter-spacing:1.5px;
+}
+
+.balance{
+    margin:7px 0 2px;
+    font-size:58px;
+    line-height:1;
+    font-weight:900;
+    letter-spacing:-2px;
+    background:linear-gradient(180deg,#ffe66b,#ffad00);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+}
+
+.currency{
+    color:#aaa;
+    font-size:13px;
+    font-weight:bold;
+}
+
+.click-area{
+    display:flex;
+    justify-content:center;
+    margin:22px 0;
+}
+
+.click{
+    width:210px;
+    height:210px;
+    border:0;
+    border-radius:50%;
+    cursor:pointer;
+    color:#16120a;
+    font-weight:900;
+    background:
+        radial-gradient(circle at 35% 25%,#fff1a6,#ffd33d 35%,#ffad00 70%,#f28b00);
+    box-shadow:
+        0 0 0 10px rgba(255,196,0,.06),
+        0 0 0 22px rgba(255,196,0,.025),
+        0 18px 50px rgba(255,166,0,.25);
+    transition:.12s;
+}
+
+.click:active{
+    transform:scale(.93);
+}
+
+.click-icon{
+    font-size:50px;
+    display:block;
+    margin-bottom:4px;
+}
+
+.click-text{
+    font-size:24px;
+}
+
+.click-sub{
+    font-size:11px;
+    opacity:.65;
+    margin-top:4px;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-bottom:15px;
+}
+
+.stat{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:17px;
+}
+
+.stat-top{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    color:var(--muted);
+    font-size:12px;
+    font-weight:bold;
+}
+
+.stat-number{
+    margin-top:8px;
+    font-size:25px;
+    font-weight:900;
+}
+
+.menu{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.menu button{
+    min-height:68px;
+    border:1px solid var(--border);
+    border-radius:20px;
+    background:linear-gradient(145deg,#181b25,#11131b);
+    color:#fff;
+    font-size:14px;
+    font-weight:800;
+    cursor:pointer;
+    transition:.12s;
+}
+
+.menu button:active{
+    transform:scale(.96);
+}
+
+.menu-icon{
+    display:block;
+    font-size:24px;
+    margin-bottom:6px;
+}
+
+.message{
+    min-height:24px;
+    text-align:center;
+    color:var(--gold);
+    font-size:13px;
+    font-weight:bold;
+    margin:15px 0 0;
+}
+
+.ref-box,
+.top{
+    display:none;
+    margin-top:15px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:23px;
+    padding:20px;
+}
+
+.section-title{
+    margin:0 0 12px;
+    font-size:19px;
+}
+
+.ref-info{
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.5;
+}
+
+.ref-link{
+    margin:14px 0;
+    padding:13px;
+    border-radius:14px;
+    background:#080a0f;
+    border:1px solid var(--border);
+    color:#ffd23d;
+    font-size:12px;
+    word-break:break-all;
+}
+
+.gold-button{
+    width:100%;
+    border:0;
+    border-radius:15px;
+    padding:14px;
+    background:linear-gradient(135deg,#ffd83d,#ff9c00);
+    color:#15110a;
+    font-weight:900;
+    font-size:14px;
+}
+
+.player{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:13px;
+    margin:7px 0;
+    border-radius:15px;
+    background:#181b24;
+}
+
+.player-left{
+    display:flex;
+    align-items:center;
+    gap:9px;
+}
+
+.rank{
+    width:28px;
+    height:28px;
+    border-radius:9px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#252936;
+    font-size:12px;
+    font-weight:900;
+}
+
+.player-name{
+    font-size:13px;
+    font-weight:700;
+}
+
+.player-coins{
+    color:var(--gold);
+    font-size:13px;
+    font-weight:900;
+}
+
+#loading{
+    padding:80px 20px;
+    text-align:center;
+    color:var(--muted);
+    font-size:14px;
+}
+
+.footer{
+    text-align:center;
+    color:#555b69;
+    font-size:10px;
+    margin-top:25px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div id="loading">
+        🪙 Telegram foydalanuvchisi aniqlanmoqda...
+    </div>
+
+    <div id="app" style="display:none">
+
+        <div class="header">
+            <div class="logo">
+                <div class="logo-coin">🪙</div>
+                <div class="logo-text">SHO<span>COINS</span></div>
+            </div>
+
+            <div class="status">● ONLINE</div>
+        </div>
+
+        <div class="profile">
+            <div class="avatar" id="avatar">S</div>
+
+            <div>
+                <div class="profile-name" id="profileName">
+                    Shohcoins User
+                </div>
+
+                <div class="profile-id" id="profileId">
+                    Telegram user
+                </div>
+            </div>
+        </div>
+
+        <div class="balance-card">
+
+            <div class="balance-label">
+                Sizning balansingiz
+            </div>
+
+            <div class="balance" id="balance">
+                0
+            </div>
+
+            <div class="currency">
+                SHC COINS
+            </div>
+
+        </div>
+
+        <div class="click-area">
+
+            <button class="click" onclick="clickCoin()">
+
+                <span class="click-icon">🪙</span>
+
+                <span class="click-text">
+                    +1 SHC
+                </span>
+
+                <span class="click-sub">
+                    BOSING VA YIG‘ING
+                </span>
+
+            </button>
+
+        </div>
+
+        <div class="stats">
+
+            <div class="stat">
+
+                <div class="stat-top">
+                    🖱️ JAMI KLIKLAR
+                </div>
+
+                <div class="stat-number" id="clicks">
+                    0
+                </div>
+
+            </div>
+
+            <div class="stat">
+
+                <div class="stat-top">
+                    👥 REFERRALLAR
+                </div>
+
+                <div class="stat-number" id="refs">
+                    0
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="menu">
+
+            <button onclick="daily()">
+                <span class="menu-icon">🎁</span>
+                Daily Bonus
+            </button>
+
+            <button onclick="showReferral()">
+                <span class="menu-icon">👥</span>
+                Referral
+            </button>
+
+            <button onclick="showTop()">
+                <span class="menu-icon">🏆</span>
+                TOP 20
+            </button>
+
+            <button onclick="shareReferral()">
+                <span class="menu-icon">📤</span>
+                Ulashish
+            </button>
+
+        </div>
+
+        <div class="message" id="message"></div>
+
+        <div class="ref-box" id="refBox">
+
+            <h3 class="section-title">
+                👥 Referral
+            </h3>
+
+            <div class="ref-info">
+                Do‘stlaringizni taklif qiling va SHC yig‘ing.
+                Yangi qo‘shilgan foydalanuvchiga
+                <b>100 SHC</b> beriladi.
+            </div>
+
+            <div class="ref-link" id="refLink"></div>
+
+            <button class="gold-button" onclick="copyReferral()">
+                📋 LINKNI NUSXALASH
+            </button>
+
+        </div>
+
+        <div class="top" id="top">
+
+            <h3 class="section-title">
+                🏆 TOP 20
+            </h3>
+
+            <div id="topList"></div>
+
+        </div>
+
+        <div class="footer">
+            SHOCOINS • Telegram Mini App
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const tg = window.Telegram.WebApp;
+
+tg.ready();
+tg.expand();
+
+let user = null;
+let referralLink = "";
+
+function message(text){
+
+    document.getElementById("message").innerText = text;
+
+}
+
+async function api(url, options={}){
+
+    options.headers = {
+        "Content-Type":"application/json",
+        ...(options.headers || {})
+    };
+
+    return fetch(url, options);
+
+}
+
+async function start(){
+
+    user = tg.initDataUnsafe.user;
+
+    if(!user){
+
+        document.getElementById("loading").innerText =
+            "❌ Saytni Telegram bot ichidan oching.";
+
+        return;
+
+    }
+
+    const response = await api("/api/me",{
+
+        method:"POST",
+
+        body:JSON.stringify({
+            user:user
+        })
+
+    });
+
+    const data = await response.json();
+
+    if(!data.success){
+
+        document.getElementById("loading").innerText =
+            "❌ Foydalanuvchini aniqlab bo‘lmadi.";
+
+        return;
+
+    }
+
+    document.getElementById("loading").style.display="none";
+    document.getElementById("app").style.display="block";
+
+    update(data.user);
+
+}
+
+function update(data){
+
+    document.getElementById("balance").innerText =
+        data.balance;
+
+    document.getElementById("clicks").innerText =
+        data.clicks;
+
+    document.getElementById("refs").innerText =
+        data.referral_count;
+
+    const name =
+        data.first_name ||
+        data.username ||
+        "Shohcoins User";
+
+    document.getElementById("profileName").innerText =
+        name;
+
+    document.getElementById("profileId").innerText =
+        data.username
+        ? "@"+data.username
+        : "Telegram ID: "+data.telegram_id;
+
+    document.getElementById("avatar").innerText =
+        name.charAt(0).toUpperCase();
+
+}
+
+async function clickCoin(){
+
+    if(!user) return;
+
+    const response = await api("/api/click",{
+
+        method:"POST",
+
+        body:JSON.stringify({
+            user:user
+        })
+
+    });
+
+    const data = await response.json();
+
+    if(!data.success){
+
+        message(data.error || "Xatolik");
+        return;
+
+    }
+
+    document.getElementById("balance").innerText =
+        data.balance;
+
+    document.getElementById("clicks").innerText =
+        data.clicks;
+
+}
+
+async function daily(){
+
+    const response = await api("/api/daily",{
+
+        method:"POST",
+
+        body:JSON.stringify({
+            user:user
+        })
+
+    });
+
+    const data = await response.json();
+
+    if(!data.success){
+
+        message(data.error || "Bonus olinmadi");
+        return;
+
+    }
+
+    document.getElementById("balance").innerText =
+        data.balance;
+
+    message("🎁 +"+data.bonus+" SHC olindi!");
+
+}
+
+async function showReferral(){
+
+    const response = await api("/api/referral",{
+
+        method:"POST",
+
+        body:JSON.stringify({
+            user:user
+        })
+
+    });
+
+    const data = await response.json();
+
+    if(!data.success){
+
+        message("Referralni yuklab bo‘lmadi.");
+        return;
+
+    }
+
+    referralLink = data.link;
+
+    document.getElementById("refLink").innerText =
+        referralLink;
+
+    document.getElementById("refBox").style.display =
+        "block";
+
+    document.getElementById("top").style.display =
+        "none";
+
+}
+
+function copyReferral(){
+
+    if(!referralLink) return;
+
+    navigator.clipboard.writeText(referralLink);
+
+    message("✅ Referral link nusxalandi!");
+
+}
+
+function shareReferral(){
+
+    if(!referralLink){
+
+        showReferral();
+        return;
+
+    }
+
+    const text =
+        "🪙 SHOCOINS'ga qo‘shiling!\n\n"+
+        "Men bilan birga SHC yig‘ing!\n\n"+
+        referralLink;
+
+    if(navigator.share){
+
+        navigator.share({
+            title:"SHOCOINS",
+            text:text
+        });
+
+    }else{
+
+        navigator.clipboard.writeText(
+            referralLink
+        );
+
+        message("✅ Link nusxalandi!");
+
+    }
+
+}
+
+async function showTop(){
+
+    const response =
+        await fetch("/api/top");
+
+    const data =
+        await response.json();
+
+    if(!data.success) return;
+
+    const list =
+        document.getElementById("topList");
+
+    list.innerHTML = "";
+
+    data.users.forEach((player,index)=>{
+
+        const row =
+            document.createElement("div");
+
+        row.className = "player";
+
+        const name =
+            player.first_name ||
+            player.username ||
+            "User";
+
+        row.innerHTML = `
+            <div class="player-left">
+                <div class="rank">
+                    ${index+1}
+                </div>
+
+                <div class="player-name">
+                    ${name}
+                </div>
+            </div>
+
+            <div class="player-coins">
+                ${player.balance} SHC
+            </div>
+        `;
+
+        list.appendChild(row);
+
+    });
+
+    document.getElementById("top").style.display =
+        "block";
+
+    document.getElementById("refBox").style.display =
+        "none";
+
+}
+
+start();
+
+</script>
+
+</body>
 </html>
 """
 
