@@ -3,13 +3,264 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shohcoin MiniApp</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>$ ShohCoin $</title>
+
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            background: #090a0f;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 70px;
+            margin-top: 10px;
+        }
+
+        h1 {
+            font-size: 48px;
+            margin: 5px 0;
+            font-weight: 800;
+        }
+
+        .subtitle {
+            color: #aaa;
+            font-size: 20px;
+            margin-bottom: 35px;
+        }
+
+        .balance {
+            background: #171820;
+            border: 1px solid #30313b;
+            border-radius: 30px;
+            padding: 35px 20px;
+            margin-bottom: 30px;
+        }
+
+        .balance-title {
+            color: #aaa;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        #balance {
+            color: #ffc21c;
+            font-size: 72px;
+            font-weight: bold;
+        }
+
+        .coin-name {
+            color: #aaa;
+            font-size: 18px;
+            margin-top: 8px;
+        }
+
+        .click-btn {
+            width: 100%;
+            height: 180px;
+            border: none;
+            border-radius: 35px;
+            background: linear-gradient(135deg, #ffc928, #ff9f1c);
+            color: #111;
+            font-size: 38px;
+            font-weight: bold;
+            box-shadow: 0 10px 35px rgba(255, 174, 0, 0.25);
+            cursor: pointer;
+        }
+
+        .click-btn:active {
+            transform: scale(0.97);
+        }
+
+        .coin {
+            font-size: 55px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .stat {
+            background: #171820;
+            border: 1px solid #30313b;
+            border-radius: 25px;
+            padding: 25px 10px;
+        }
+
+        .number {
+            font-size: 42px;
+            font-weight: bold;
+        }
+
+        .label {
+            color: #aaa;
+            font-size: 17px;
+            margin-top: 8px;
+        }
+
+        .message {
+            margin-top: 20px;
+            color: #888;
+            font-size: 14px;
+        }
+    </style>
 </head>
+
 <body>
-    <h1>Shohcoin yig‘ing!</h1>
-    <button id="click-btn">Bosish</button>
-    <p>Balans: <span id="balance">0</span> Shohcoin</p>
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+    <div class="logo">🪙</div>
+
+    <h1>Shohcoins</h1>
+
+    <div class="subtitle">
+        Klik qiling va SHC yig‘ing!
+    </div>
+
+    <div class="balance">
+        <div class="balance-title">
+            Sizning balansingiz
+        </div>
+
+        <div id="balance">0</div>
+
+        <div class="coin-name">
+            SHC COINS
+        </div>
+    </div>
+
+    <button class="click-btn" onclick="addCoin()">
+        <span class="coin">🪙</span>
+        +1 SHC
+    </button>
+
+    <div class="stats">
+
+        <div class="stat">
+            <div class="number" id="clicks">0</div>
+            <div class="label">Jami kliklar</div>
+        </div>
+
+        <div class="stat">
+            <div class="number">SHC</div>
+            <div class="label">Valyuta</div>
+        </div>
+
+    </div>
+
+    <div class="message" id="message">
+        Shohcoins
+    </div>
+
+
+    <script>
+
+        const tg = window.Telegram.WebApp;
+
+        tg.ready();
+        tg.expand();
+
+        let telegramId = "test_user";
+
+        if (
+            tg.initDataUnsafe &&
+            tg.initDataUnsafe.user &&
+            tg.initDataUnsafe.user.id
+        ) {
+            telegramId = String(tg.initDataUnsafe.user.id);
+        }
+
+
+        async function loadUser() {
+
+            try {
+
+                const response = await fetch(
+                    "/user?telegram_id=" +
+                    encodeURIComponent(telegramId)
+                );
+
+                const data = await response.json();
+
+                if (data.balance !== undefined) {
+                    document.getElementById("balance").textContent =
+                        data.balance;
+                }
+
+                if (data.clicks !== undefined) {
+                    document.getElementById("clicks").textContent =
+                        data.clicks;
+                }
+
+            } catch (error) {
+
+                console.log("User yuklashda xato:", error);
+
+            }
+        }
+
+
+        async function addCoin() {
+
+            try {
+
+                const response = await fetch("/click", {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        telegram_id: telegramId
+                    })
+
+                });
+
+                const data = await response.json();
+
+                if (data.balance !== undefined) {
+                    document.getElementById("balance").textContent =
+                        data.balance;
+                }
+
+                if (data.clicks !== undefined) {
+                    document.getElementById("clicks").textContent =
+                        data.clicks;
+                }
+
+                document.getElementById("message").textContent =
+                    "+1 SHC qo‘shildi!";
+
+            } catch (error) {
+
+                console.log("Klik xatosi:", error);
+
+                document.getElementById("message").textContent =
+                    "Xatolik yuz berdi";
+
+            }
+        }
+
+
+        loadUser();
+
+    </script>
+
 </body>
 </html>
