@@ -1063,8 +1063,9 @@ start();
 
 </body>
 
-HTML = r"""
-<!DOCTYPE html>
+</body>
+</html>
+"""
 <html lang="uz">
 <head>
 <meta charset="UTF-8">
